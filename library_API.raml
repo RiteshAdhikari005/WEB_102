@@ -1,0 +1,104 @@
+#%RAML 1.0
+title: Book Library API
+version: v1
+baseUri: http://localhost:3000/api
+
+types:
+  Book:
+    type: object
+    properties:
+      id: integer
+      title: string
+      author: string
+      publishedYear: integer
+    required: [id, title, author]
+
+/books:
+  get:
+    description: Get all books
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              [
+                {
+                  "id": 1,
+                  "title": "Atomic Habits",
+                  "author": "James Clear",
+                  "publishedYear": 2018
+                },
+                {
+                  "id": 2,
+                  "title": "Clean Code",
+                  "author": "Robert C. Martin",
+                  "publishedYear": 2008
+                }
+              ]
+
+  post:
+    description: Add a new book
+    body:
+      application/json:
+        type: Book
+        example:
+          {
+            "id": 3,
+            "title": "The Pragmatic Programmer",
+            "author": "Andrew Hunt",
+            "publishedYear": 1999
+          }
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              {
+                "message": "Book added successfully"
+              }
+
+/books/{id}:
+  uriParameters:
+    id:
+      type: integer
+      description: Book ID
+
+  get:
+    description: Get a book by ID
+    responses:
+      200:
+        body:
+          application/json:
+            type: Book
+      404:
+        body:
+          application/json:
+            example:
+              {
+                "message": "Book not found"
+              }
+
+  put:
+    description: Update a book
+    body:
+      application/json:
+        type: Book
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {
+                "message": "Book updated successfully"
+              }
+
+  delete:
+    description: Delete a book
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {
+                "message": "Book deleted successfully"
+              }
